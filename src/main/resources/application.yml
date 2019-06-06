@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test?autoReconnect=true&autoReconnectForPools=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+    name: test
+    username: test
+    # password: -Dspring.datasource.password=XXXX
