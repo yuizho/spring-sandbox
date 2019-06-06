@@ -5,3 +5,8 @@ spring:
     name: test
     username: test
     # password: -Dspring.datasource.password=XXXX
+
+
+  logging:
+    jdbc:
+      sqlonly: on
