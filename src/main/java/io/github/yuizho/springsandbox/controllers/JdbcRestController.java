@@ -11,10 +11,10 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/jdbc")
-public class DemoRestController {
+public class JdbcRestController {
     private final ProductRepository productRepository;
 
-    public DemoRestController(ProductRepository productRepository) {
+    public JdbcRestController(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
