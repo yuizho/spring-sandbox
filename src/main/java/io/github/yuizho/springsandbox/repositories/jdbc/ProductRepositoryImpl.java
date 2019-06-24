@@ -1,6 +1,6 @@
-package io.github.yuizho.springsandbox.repositories;
+package io.github.yuizho.springsandbox.repositories.jdbc;
 
-import io.github.yuizho.springsandbox.repositories.entities.Product;
+import io.github.yuizho.springsandbox.repositories.jdbc.entities.Product;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;

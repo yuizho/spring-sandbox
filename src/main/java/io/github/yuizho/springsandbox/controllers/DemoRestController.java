@@ -1,7 +1,7 @@
 package io.github.yuizho.springsandbox.controllers;
 
-import io.github.yuizho.springsandbox.repositories.ProductRepository;
-import io.github.yuizho.springsandbox.repositories.entities.Product;
+import io.github.yuizho.springsandbox.repositories.jdbc.ProductRepository;
+import io.github.yuizho.springsandbox.repositories.jdbc.entities.Product;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("api/jdbc")
 public class DemoRestController {
     private final ProductRepository productRepository;
 

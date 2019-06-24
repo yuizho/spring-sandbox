@@ -1,4 +1,4 @@
-package io.github.yuizho.springsandbox.repositories.entities;
+package io.github.yuizho.springsandbox.repositories.jdbc.entities;
 
 import lombok.Getter;
 import lombok.Setter;

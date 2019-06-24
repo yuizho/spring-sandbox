@@ -1,6 +1,6 @@
-package io.github.yuizho.springsandbox.repositories;
+package io.github.yuizho.springsandbox.repositories.jdbc;
 
-import io.github.yuizho.springsandbox.repositories.entities.Product;
+import io.github.yuizho.springsandbox.repositories.jdbc.entities.Product;
 
 import java.util.List;
 import java.util.Optional;
