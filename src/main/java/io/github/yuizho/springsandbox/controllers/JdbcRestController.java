@@ -2,6 +2,7 @@ package io.github.yuizho.springsandbox.controllers;
 
 import io.github.yuizho.springsandbox.repositories.jdbc.ProductRepository;
 import io.github.yuizho.springsandbox.repositories.jdbc.entities.Product;
+import org.slf4j.Logger;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,14 +13,17 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/jdbc")
 public class JdbcRestController {
+    private final Logger logger;
     private final ProductRepository productRepository;
 
-    public JdbcRestController(ProductRepository productRepository) {
+    public JdbcRestController(Logger logger, ProductRepository productRepository) {
+        this.logger = logger;
         this.productRepository = productRepository;
     }
 
     @GetMapping("/products/{id}")
     public String get(@PathVariable Integer id) {
+        logger.info("============= this is api/jdbc/product/{}", id);
         return productRepository.find(id)
                 .map(Product::toString)
                 .orElse(String.format(

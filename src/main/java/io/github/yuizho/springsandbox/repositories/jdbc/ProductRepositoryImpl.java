@@ -1,6 +1,7 @@
 package io.github.yuizho.springsandbox.repositories.jdbc;
 
 import io.github.yuizho.springsandbox.repositories.jdbc.entities.Product;
+import org.slf4j.Logger;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -16,16 +17,18 @@ import java.util.Optional;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
-
+    private final Logger logger;
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
-    public ProductRepositoryImpl(NamedParameterJdbcTemplate jdbcTemplate) {
+    public ProductRepositoryImpl(Logger logger, NamedParameterJdbcTemplate jdbcTemplate) {
+        this.logger = logger;
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public Optional<Product> find(int id) {
         String sql = "SELECT * FROM product WHERE id = :id";
+        logger.info("find: {}", sql);
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         try {
@@ -41,6 +44,7 @@ public class ProductRepositoryImpl implements ProductRepository {
         String sql = "INSERT INTO product " +
                 "(division, created, name) " +
                 "VALUES(:division, :created, :name)";
+        logger.info("batchInsert: {}", sql);
         jdbcTemplate.batchUpdate(sql,
                 producs.stream()
                         .map(p ->
