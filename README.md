@@ -3,12 +3,12 @@
 ### create database container
 ```bash
 # create docker network
-$ docker network create -d bridge --subnet=192.168.10.0/24 sandbox-network
+$ docker network create -d bridge --subnet=192.168.100.0/24 sandbox-network
 
 # create docker container 
 $ docker run \
   --net=sandbox-network \
-  --ip=192.168.10.2 \
+  --ip=192.168.100.2 \
   -e MYSQL_ROOT_PASSWORD=password \
   -e MYSQL_USER=test \
   -e MYSQL_PASSWORD=password \
@@ -18,6 +18,9 @@ $ docker run \
   --name mysql_sandbox \
   -d mysql:5.7 \
   --character-set-server=utf8
+  
+# when the container was already created
+$ docker network connect --ip 192.168.100.2 sandbox-network mysql_sandbox  
 ```
 
 ### create tables
