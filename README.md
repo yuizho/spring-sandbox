@@ -56,9 +56,19 @@ CREATE TABLE product(
 # build app serveer container
 $ docker build . -t spring_sandbox
 
-# run container
+# run container with absolute datetime configuration
 $ docker run \
   --rm \
+  --env=FAKETIME='2020-12-25 20:30:00' \
+  --net=sandbox-network \
+  --name spring_sandbox \
+  -p 8080:8080 \
+  spring_sandbox
+  
+# run container with relative datetime configuration
+$ docker run \
+  --rm \
+  --env=FAKETIME='+60d' \
   --net=sandbox-network \
   --name spring_sandbox \
   -p 8080:8080 \
