@@ -18,6 +18,7 @@ ENV FAKETIME_CACHE_DURATION=1
 # システム時刻の変更 (docker run時に変更可能)
 # ENV FAKETIME='2020-12-24 20:30:00'
 
+WORKDIR /project
 COPY target target
 COPY src src
 COPY pom.xml pom.xml
