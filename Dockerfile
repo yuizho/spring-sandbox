@@ -12,4 +12,4 @@ COPY .mvn .mvn
 #RUN ./mvnw -U package -Dmaven.test.skip=true
 #VOLUME /root/.m2
 
-ENTRYPOINT ["java","-Dspring.datasource.password=password", "-Dspring.datasource.url=jdbc:mysql://192.168.100.2:3306/test?autoReconnect=true&autoReconnectForPools=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull", "-Djava.security.egd=file:/dev/./urandom", "-jar","/project/target/springsandbox-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java","-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005","-Dspring.datasource.password=password", "-Dspring.datasource.url=jdbc:mysql://192.168.100.2:3306/test?autoReconnect=true&autoReconnectForPools=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull", "-Djava.security.egd=file:/dev/./urandom", "-jar","target/springsandbox-0.0.1-SNAPSHOT.jar"]

@@ -62,5 +62,6 @@ $ docker run \
   --net=sandbox-network \
   --name spring_sandbox \
   -p 8080:8080 \
+  -p 5005:5005 \
   spring_sandbox
 ```
