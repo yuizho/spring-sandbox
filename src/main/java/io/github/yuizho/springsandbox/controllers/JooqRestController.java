@@ -23,4 +23,15 @@ public class JooqRestController {
         logger.info("============= this is api/jooq/product");
         return productRepository.findAll();
     }
+
+    @GetMapping("/products/{id}")
+    public Product get(@PathVariable Integer id) {
+        logger.info("============= this is api/jooq/product/{}", id);
+        return productRepository.find(id)
+                .orElseThrow(() ->
+                        new IllegalCallerException(
+                                String.format("There is no target product (id: %d).", id)
+                        )
+                );
+    }
 }
