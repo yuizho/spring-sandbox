@@ -5,6 +5,8 @@ import io.github.yuizho.springsandbox.repositories.jooq.entities.Product;
 import org.slf4j.Logger;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
+import java.time.Instant;
 import java.util.List;
 
 @RestController
@@ -33,5 +35,17 @@ public class JooqRestController {
                                 String.format("There is no target product (id: %d).", id)
                         )
                 );
+    }
+
+    @PostMapping("/products")
+    @Transactional
+    public void post(@RequestParam String name) {
+        Product product = new Product(
+                -1,
+                1,
+                Instant.now(),
+                name
+        );
+        productRepository.add(product);
     }
 }

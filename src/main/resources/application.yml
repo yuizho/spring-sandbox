@@ -8,6 +8,5 @@ spring:
   logging:
     jdbc:
       sqlonly: on
-jooq:
-  sql:
-    dialect: MySQL
+  jooq:
+    sql-dialect: MySQL
