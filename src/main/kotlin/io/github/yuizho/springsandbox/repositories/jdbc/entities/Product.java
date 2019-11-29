@@ -1,11 +1,11 @@
 package io.github.yuizho.springsandbox.repositories.jdbc.entities;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Product {
     private int id;
     private int division;
-    private Date created;
+    private LocalDate created;
     private String name;
 
     public int getId() {
@@ -16,7 +16,7 @@ public class Product {
         return this.division;
     }
 
-    public Date getCreated() {
+    public LocalDate getCreated() {
         return this.created;
     }
 
@@ -32,7 +32,7 @@ public class Product {
         this.division = division;
     }
 
-    public void setCreated(Date created) {
+    public void setCreated(LocalDate created) {
         this.created = created;
     }
 

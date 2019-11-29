@@ -18,10 +18,10 @@ class KotlinProductRepositoryImpl(
         return jdbcOperations.queryForObject("""
             SELECT * FROM product WHERE id = :id
         """.trimIndent(), mapOf<String, Any>("id" to id)) { rs, _ ->
-            with(Product()) {
+            Product().apply {
                 setId(rs.getInt("id"))
                 setDivision(rs.getInt("division"))
-                setCreated(rs.getDate("created"))
+                setCreated(rs.getDate("created").toLocalDate())
                 setName(rs.getString("name"))
                 this
             }
@@ -32,10 +32,10 @@ class KotlinProductRepositoryImpl(
         return return jdbcOperations.query("""
             SELECT * FROM product
         """.trimIndent()) { rs, _ ->
-            with(Product()) {
+            Product().apply {
                 setId(rs.getInt("id"))
                 setDivision(rs.getInt("division"))
-                setCreated(rs.getDate("created"))
+                setCreated(rs.getDate("created").toLocalDate())
                 setName(rs.getString("name"))
                 this
             }

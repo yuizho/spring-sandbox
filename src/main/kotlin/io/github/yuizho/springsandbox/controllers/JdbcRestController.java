@@ -1,5 +1,6 @@
 package io.github.yuizho.springsandbox.controllers;
 
+import io.github.yuizho.springsandbox.BadRequestException;
 import io.github.yuizho.springsandbox.repositories.jdbc.KotlinProductRepository;
 import io.github.yuizho.springsandbox.repositories.jdbc.ProductRepository;
 import io.github.yuizho.springsandbox.repositories.jdbc.entities.Product;
@@ -7,6 +8,7 @@ import org.slf4j.Logger;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -42,8 +44,7 @@ public class JdbcRestController {
         logger.info("============= this is api/jdbc/kotlin/products/");
         return Optional.ofNullable(kotlinProductRepository.findAll())
                 .map(List::toString)
-                .orElse(String.format(
-                        "There is no product."));
+                .orElseThrow(() -> new BadRequestException("There is no product."));
     }
 
     @GetMapping("/kotlin/products/{id}")
@@ -51,9 +52,11 @@ public class JdbcRestController {
         logger.info("============= this is api/jdbc/kotlin/products/{}", id);
         return Optional.ofNullable(kotlinProductRepository.findBy(id))
                 .map(Product::toString)
-                .orElse(String.format(
-                        "There is no target product (id: %d).",
-                        id));
+                .orElseThrow(() ->
+                        new BadRequestException(
+                                String.format("There is no target product (id: %d).", id)
+                        )
+                );
     }
 
     @PostMapping("/products")
@@ -63,7 +66,7 @@ public class JdbcRestController {
                 .map(n -> {
                     Product p = new Product();
                     p.setName(n);
-                    p.setCreated(new Date());
+                    p.setCreated(LocalDate.now());
                     p.setDivision(1);
                     // dateずらすためにsleep
                     try { Thread.sleep(1500); } catch (Exception ex) {}
