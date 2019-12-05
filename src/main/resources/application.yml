@@ -10,3 +10,5 @@ spring:
       sqlonly: on
   jooq:
     sql-dialect: MySQL
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
