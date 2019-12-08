@@ -12,3 +12,14 @@ spring:
     sql-dialect: MySQL
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
+
+cloud:
+  aws:
+    credentials:
+      accessKey: xx
+      secretKey: xx
+    stack:
+      auto: false
+    region:
+      static: ap-northeast-1
+      auto: false
