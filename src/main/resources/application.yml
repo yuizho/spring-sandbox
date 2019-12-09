@@ -12,3 +12,6 @@ spring:
     sql-dialect: MySQL
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
+
+file:
+  path: "@project.build.directory@/files"
