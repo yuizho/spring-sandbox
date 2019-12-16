@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository
 interface KotlinProductRepository {
     fun findBy(id: Int): Product?
     fun findAll(): List<Product>?
+    fun add(product: Product): Boolean
+    fun addAll(products: List<Product>): Boolean
 }
 
 @Repository
@@ -40,5 +42,36 @@ class KotlinProductRepositoryImpl(
                 this
             }
         }
+    }
+
+    override fun add(product: Product): Boolean {
+        val affectedRowCount = jdbcOperations.update("""
+            INSERT INTO product 
+            (division, created, name) 
+            VALUES(:division, :created, :name)
+        """.trimIndent(), mapOf(
+                "division" to product.division,
+                "created" to product.created,
+                "name" to product.name
+        ))
+        return affectedRowCount > 0
+    }
+
+    override fun addAll(products: List<Product>): Boolean {
+        val affectedRowCounts = jdbcOperations.batchUpdate(
+                """
+                INSERT INTO product
+                (division, created, name)
+                VALUES(:division, :created, :name)
+                """.trimIndent(),
+                products.map {
+                    mapOf<String, Any>(
+                            "division" to it.division,
+                            "created" to it.created,
+                            "name" to it.name
+                    )
+                }.toTypedArray()
+        )
+        return affectedRowCounts.sum() > 0
     }
 }

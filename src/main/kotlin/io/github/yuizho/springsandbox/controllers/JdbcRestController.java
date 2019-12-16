@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -74,5 +73,35 @@ public class JdbcRestController {
                 })
                 .collect(Collectors.toList());
         productRepository.batchInsert(products);
+    }
+
+    @PostMapping("/kotlin/product")
+    @Transactional
+    public void postHandledByKotlin(@RequestParam String name) {
+        Product p = new Product();
+        p.setName(name);
+        p.setCreated(LocalDate.now());
+        p.setDivision(1);
+        kotlinProductRepository.add(p);
+    }
+
+    @PostMapping("/kotlin/products")
+    @Transactional
+    public void postHandledByKotlin(@RequestParam List<String> names) {
+        List<Product> products = names.stream()
+                .map(n -> {
+                    Product p = new Product();
+                    p.setName(n);
+                    p.setCreated(LocalDate.now());
+                    p.setDivision(1);
+                    // dateずらすためにsleep
+                    try {
+                        Thread.sleep(1500);
+                    } catch (Exception ex) {
+                    }
+                    return p;
+                })
+                .collect(Collectors.toList());
+        kotlinProductRepository.addAll(products);
     }
 }
