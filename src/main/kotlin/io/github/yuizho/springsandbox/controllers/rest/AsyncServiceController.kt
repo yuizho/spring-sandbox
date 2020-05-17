@@ -1,4 +1,4 @@
-package io.github.yuizho.springsandbox.controllers
+package io.github.yuizho.springsandbox.controllers.rest
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

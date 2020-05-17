@@ -1,4 +1,4 @@
-package io.github.yuizho.springsandbox.controllers
+package io.github.yuizho.springsandbox.controllers.rest
 
 import io.github.yuizho.springsandbox.FileProperties
 import org.slf4j.LoggerFactory

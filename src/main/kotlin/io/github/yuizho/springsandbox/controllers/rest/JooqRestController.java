@@ -1,4 +1,4 @@
-package io.github.yuizho.springsandbox.controllers;
+package io.github.yuizho.springsandbox.controllers.rest;
 
 import io.github.yuizho.springsandbox.repositories.jooq.ProductRepository;
 import io.github.yuizho.springsandbox.repositories.jooq.entities.Product;
