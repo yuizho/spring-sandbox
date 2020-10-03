@@ -9,7 +9,9 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody
 import java.io.ByteArrayOutputStream
+import java.io.OutputStream
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
@@ -47,30 +49,32 @@ class FileDownloadController(
     }
 
     @GetMapping("/zip")
-    fun downloadZip(): ResponseEntity<ByteArray> {
-        val zipFileByteArray = ByteArrayOutputStream().use { byteArrayOutputStream ->
-            ZipOutputStream(byteArrayOutputStream).use { zipOutputStream ->
-                // 圧縮する１つ目のファイル
-                val entry1 = ZipEntry("test/file1.txt")
-                val file1 = "これはfile1です".toByteArray()
-                entry1.size = file1.toUByteArray().size.toLong()
-                zipOutputStream.putNextEntry(entry1)
-                zipOutputStream.write(file1)
-                // 圧縮する２つ目のファイル
-                val entry2 = ZipEntry("test/file2.txt")
-                val file2 = "これはfile2です".toByteArray()
-                entry2.size = file2.toUByteArray().size.toLong()
-                zipOutputStream.putNextEntry(entry2)
-                zipOutputStream.write(file2)
-            }
-            // ZipOutputStreamをクローズした後呼ぶ必要がある！！
-            // https://stackoverflow.com/questions/40927894/java-zipinputstream-to-zipoutputstream-leads-to-end-of-central-directory-signa
-            byteArrayOutputStream.toByteArray()
-        }
+    fun downloadZip(): ResponseEntity<StreamingResponseBody> {
         val headers = HttpHeaders().apply {
             add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"test.zip\"")
             add(HttpHeaders.CONTENT_TYPE, "application/zip;")
         }
-        return ResponseEntity(zipFileByteArray, headers, HttpStatus.OK)
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(
+                        // https://spring.pleiades.io/spring-framework/docs/current/javadoc-api/org/springframework/web/servlet/mvc/method/annotation/StreamingResponseBody.html
+                        // Streamで返却する (非同期で処理されるためTaskExecutorを明示的に構成したほうが良いらしい)
+                        StreamingResponseBody { outputStream ->
+                            ZipOutputStream(outputStream).use { zipOutputStream ->
+                                // 圧縮する１つ目のファイル
+                                val entry1 = ZipEntry("test/file1.txt")
+                                val file1 = "これはfile1です".toByteArray()
+                                entry1.size = file1.toUByteArray().size.toLong()
+                                zipOutputStream.putNextEntry(entry1)
+                                zipOutputStream.write(file1)
+                                // 圧縮する２つ目のファイル
+                                val entry2 = ZipEntry("test/file2.txt")
+                                val file2 = "これはfile2です".toByteArray()
+                                entry2.size = file2.toUByteArray().size.toLong()
+                                zipOutputStream.putNextEntry(entry2)
+                                zipOutputStream.write(file2)
+                            }
+                        }
+                )
     }
 }
