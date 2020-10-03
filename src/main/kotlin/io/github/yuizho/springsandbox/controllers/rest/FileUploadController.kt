@@ -1,28 +1,43 @@
 package io.github.yuizho.springsandbox.controllers.rest
 
 import io.github.yuizho.springsandbox.FileProperties
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
-import java.nio.file.FileSystems
-import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.StandardOpenOption
+import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
+import java.nio.file.*
 
 @RestController
-@RequestMapping("api/file/upload")
+@RequestMapping("api/upload")
 class FileUploadController(
         val fileProperties: FileProperties
 ) {
-    @GetMapping("/test/{fileName}")
-    fun upload(@PathVariable fileName: String): String {
+    @PostMapping("/stream/{fileName}")
+    fun uploadHandledByStream(
+            @PathVariable fileName: String,
+            @RequestParam("file") file: MultipartFile
+    ): String {
         val folderPath = FileSystems.getDefault().getPath(fileProperties.path)
         Files.createDirectories(folderPath)
-        val filePath = folderPath.resolve(Path.of(fileName))
-        // https://www.ne.jp/asahi/hishidama/home/tech/java/files.html
-        Files.writeString(filePath, "content", StandardOpenOption.CREATE_NEW)
+        val filePath = folderPath.resolve(Paths.get(fileName))
 
-        return Files.readString(filePath)
+        file.resource.inputStream.use { input ->
+            Files.newOutputStream(filePath).buffered().use { output ->
+                input.copyTo(output)
+            }
+        }
+
+        return "OK"
+    }
+
+    @PostMapping("/array/{fileName}")
+    fun uploadHandledByArray(
+            @PathVariable fileName: String,
+            @RequestParam("file") file: MultipartFile
+    ): String {
+        val folderPath = FileSystems.getDefault().getPath(fileProperties.path)
+        Files.createDirectories(folderPath)
+        val filePath = folderPath.resolve(Paths.get(fileName))
+
+        Files.write(filePath, file.bytes, StandardOpenOption.WRITE)
+        return "OK"
     }
 }
