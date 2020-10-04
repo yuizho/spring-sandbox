@@ -31,7 +31,7 @@ public class JooqRestController {
         logger.info("============= this is api/jooq/product/{}", id);
         return productRepository.find(id)
                 .orElseThrow(() ->
-                        new IllegalCallerException(
+                        new IllegalStateException(
                                 String.format("There is no target product (id: %d).", id)
                         )
                 );
